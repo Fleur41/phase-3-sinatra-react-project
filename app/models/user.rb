@@ -2,7 +2,7 @@
 require 'bcrypt'
 
 class User < ActiveRecord::Base
-  has_many :project_tasks
+  has_many :tasks
 
   validates :username, presence: true, uniqueness: true
   validates :password_hash, presence: true

@@ -1,30 +1,41 @@
-require 'date'
-puts "🌱 Seeding spices..."
+puts "🌱 Seeding data..."
 
-# Seed your database here
-# create users
+# Make 5 users
+5.times do
+  User.create(
+    username: Faker::Internet.username,
+    email: "#{Faker::Internet.username}@gmail.com",
+    password: Faker::Internet.password(min_length: 8),
+    image: Faker::Avatar.image
+    )
+end
+
+# Make 10 projects
 10.times do
-    user = User.create(
+  # create a projects with random data
+project = Project.create(
+    name: Faker::ProgrammingLanguage.name,
+    description: Faker::Lorem.sentence,
+    author: Faker::Name.name, 
+    status:['On Hold', 'Ready to start', 'Working on it', 'Completed'].sample,
+    date: Faker::Date.backward(days: 14)
+  )
+  
+  # create between 1 and 5 members for each project
+  rand(1..5).times do
+    # get a random user for every member
+    # https://stackoverflow.com/a/25577054
+    user = User.order('RANDOM()').first
+
+    # A member belongs to a project and a user, so we must provide those foreign keys
+    Member.create(
       name: Faker::Name.name,
-      email: Faker::Internet.email,
-      password: "password"
+      email: "#{Faker::Internet.name}@gmail.com",
+      user: user,
+      project: project,
+      image: Faker::Avatar.image
     )
   end
-  # run a loop 50 times
-  50.times do |i|
+end
 
-        # start_date = Date.new(2023, 1, 1)
-        # end_date = Date.new(2023, 12, 31)
-
-        # random_date = Faker::Date.between(start_date: start_date, end_date: end_date)
-        Task.create(
-          user_id: rand(1..10),
-          name: Faker::Name.name,
-          description: Faker::Lorem.sentence,
-          date: Faker::Date.between(from: '2023-03-03', to: '2023-03-05'),     
-          due_date: Faker::Date.between(from: '2023-01-01', to: '2023-03-31'),
-          completion_status: ['In progress', 'Completed', 'On hold'].sample,
-        )
-      end
-
-puts "✅ Done seeding!"
+puts "🌱 Done seeding!"

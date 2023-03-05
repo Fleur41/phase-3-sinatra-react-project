@@ -17,7 +17,7 @@ class MyApp < Sinatra::Base
     response.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000/'
   end
 
-  # routes...
+  # the routes.
   options "*" do
     response.headers["Allow"] = "GET, PUT, POST, DELETE, OPTIONS"
     response.headers["Access-Control-Allow-Headers"] = "Authorization, 
